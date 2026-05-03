@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="flame" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF671F"/>
+      <stop offset="100%" stop-color="#FFA836"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#FF671F" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background Navy Circle -->
+  <circle cx="60" cy="60" r="56" fill="#06038D" />
+
+  <!-- Ashoka Chakra (White/Transparent) -->
+  <g transform="translate(60,60)">
+    <circle cx="0" cy="0" r="44" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.15"/>
+    <circle cx="0" cy="0" r="3" fill="#FFFFFF" opacity="0.15"/>
+    <!-- 24 Spokes -->
+    <g stroke="#FFFFFF" stroke-width="1" opacity="0.15">
+      <line x1="0" y1="-3" x2="0" y2="-44"/>
+      <line x1="0" y1="3" x2="0" y2="44"/>
+      <line x1="-3" y1="0" x2="-44" y2="0"/>
+      <line x1="3" y1="0" x2="44" y2="0"/>
+      <line x1="0" y1="0" x2="11.4" y2="42.5"/>
+      <line x1="0" y1="0" x2="-11.4" y2="-42.5"/>
+      <line x1="0" y1="0" x2="-11.4" y2="42.5"/>
+      <line x1="0" y1="0" x2="11.4" y2="-42.5"/>
+      <line x1="0" y1="0" x2="22" y2="38"/>
+      <line x1="0" y1="0" x2="-22" y2="-38"/>
+      <line x1="0" y1="0" x2="-22" y2="38"/>
+      <line x1="0" y1="0" x2="22" y2="-38"/>
+      <line x1="0" y1="0" x2="31.1" y2="31.1"/>
+      <line x1="0" y1="0" x2="-31.1" y2="-31.1"/>
+      <line x1="0" y1="0" x2="-31.1" y2="31.1"/>
+      <line x1="0" y1="0" x2="31.1" y2="-31.1"/>
+      <line x1="0" y1="0" x2="38" y2="22"/>
+      <line x1="0" y1="0" x2="-38" y2="-22"/>
+      <line x1="0" y1="0" x2="-38" y2="22"/>
+      <line x1="0" y1="0" x2="38" y2="-22"/>
+      <line x1="0" y1="0" x2="42.5" y2="11.4"/>
+      <line x1="0" y1="0" x2="-42.5" y2="-11.4"/>
+      <line x1="0" y1="0" x2="-42.5" y2="11.4"/>
+      <line x1="0" y1="0" x2="42.5" y2="-11.4"/>
+    </g>
+  </g>
+
+  <!-- Modern Saffron Flame -->
+  <path d="M60 18 C60 18, 28 55, 28 76 C28 93.5 42 108 60 108 C78 108 92 93.5 92 76 C92 55, 60 18, 60 18 Z" fill="url(#flame)" filter="url(#shadow)"/>
+  
+  <!-- Inner White Cutout Flame -->
+  <path d="M60 42 C60 42, 44 65, 44 80 C44 88.8 51.2 96 60 96 C68.8 96 76 88.8 76 80 C76 65, 60 42, 60 42 Z" fill="#FFFFFF"/>
+  
+  <!-- Core Navy Flame -->
+  <path d="M60 58 C60 58, 51 74, 51 83 C51 88 55 92 60 92 C65 92 69 88 69 83 C69 74, 60 58, 60 58 Z" fill="#06038D"/>
+</svg>

@@ -1,0 +1,50 @@
+{
+  "nav.home": "Home",
+  "nav.journey": "My Journey",
+  "nav.simulator": "Simulator",
+  "nav.mythbuster": "Myth Buster",
+  "nav.quiz": "Quiz",
+  "nav.yatriai": "Yatri AI",
+  "nav.login": "Login",
+  "nav.signup": "Create Account",
+  "nav.logout": "Log Out",
+  "nav.profile": "My Profile",
+  "nav.certificate": "Certificate",
+  "nav.guest": "Guest Mode",
+  "nav.save_progress": "Login to Save Progress",
+
+  "hero.label": "🇮🇳 India's Election Awareness Platform",
+  "hero.election": "Election",
+  "hero.awareness_journey": "Awareness Journey",
+  "hero.subtitle": "JagrukYatra guides every Indian citizen through their democratic rights — from voter registration to understanding candidates, busting myths, and making an informed choice.",
+  "hero.democracy_starts": "Democracy starts with you.",
+  "hero.start_btn": "Start Your Yatra",
+  "hero.ask_ai": "Ask Yatri AI",
+  "hero.scroll": "Scroll to explore",
+
+  "stats.voters": "Registered Voters",
+  "stats.stations": "Polling Stations",
+  "stats.seats": "Lok Sabha Seats",
+
+  "features.heading": "What's Inside",
+  "features.main_title": "Everything you need to be a",
+  "features.jagruk_naagrik": "Jagruk Naagrik",
+  "features.subtitle": "Six powerful tools designed to make every Indian an informed, empowered voter.",
+  "features.explore": "Explore",
+
+  "teaser.ai_badge": "AI-Powered",
+  "teaser.title": "Meet",
+  "teaser.description": "Your intelligent companion for all things Indian democracy. Ask about voting rights, election dates, candidate profiles, NOTA, EVMs — in any language.",
+  "teaser.btn": "Chat with Yatri AI",
+
+  "footer.rights": "All Rights Reserved",
+  "footer.built_for": "Built for India's Democracy",
+
+  "journey.title": "My Journey",
+  "journey.description": "Learn the 8 stages of the Indian election process.",
+  "journey.checklist": "Understood",
+
+  "common.loading": "Loading your Yatra...",
+  "common.continue": "Continue",
+  "common.back": "Back"
+}
