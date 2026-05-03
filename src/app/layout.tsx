@@ -1,4 +1,20 @@
+/**
+ * @file layout.tsx
+ * @description Root application layout for JagrukYatra.
+ *
+ * Responsibilities:
+ * - Loads Inter (body) and Poppins (headings) from Google Fonts with optimal display settings
+ * - Declares global Next.js Metadata and Viewport for SEO and PWA support
+ * - Wraps the entire application in ThemeProvider, LanguageProvider, and AuthProvider
+ * - Renders the persistent FloatingYatriAI widget on every page
+ *
+ * Provider order matters:
+ * ThemeProvider → LanguageProvider → AuthProvider → page content
+ * This order ensures theme-aware UI renders before language and auth state resolves.
+ */
+
 import type { Metadata, Viewport } from "next";
+
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
@@ -77,6 +93,13 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Root layout component. Rendered server-side for every route in the application.
+ * Applies global font variables, provides all context providers, and ensures
+ * the Yatri AI floating assistant is always available.
+ *
+ * @param children - The currently active page component
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

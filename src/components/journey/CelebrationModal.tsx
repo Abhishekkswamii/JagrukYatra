@@ -1,4 +1,20 @@
+/**
+ * @file CelebrationModal.tsx
+ * @description Full-screen celebration modal shown when a user completes their JagrukYatra.
+ *
+ * Features:
+ * - Indian tricolour confetti animation (6.5 s) using react-confetti
+ * - Animated trophy icon with spring physics via framer-motion
+ * - Personalised message based on first-time voter status and state
+ * - Real-time progress stats: Jagruk Score, Stages Completed, Badges Earned
+ * - Animated tricolour progress bar reflecting the user's score
+ * - Share flow: uses Web Share API with clipboard fallback
+ * - Certificate download: delegates to `downloadCertificate()` in certificateUtils.ts
+ * - Body scroll lock while modal is open for focus management
+ */
+
 "use client";
+
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";

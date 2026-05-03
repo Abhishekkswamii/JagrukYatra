@@ -1,4 +1,25 @@
+/**
+ * @file Navbar.tsx
+ * @description Primary navigation bar for JagrukYatra.
+ *
+ * Features:
+ * - Responsive desktop (xl+) and mobile (hamburger) layouts
+ * - Scroll-aware background blur and shadow via IntersectionObserver pattern
+ * - Language toggle (EN ↔ हिंदी) integrated with LanguageContext
+ * - Theme toggle (Light ↔ Dark) via next-themes
+ * - Guest mode indicator with animated pulse dot
+ * - Authenticated user profile dropdown with avatar, score, and logout
+ * - Post-login onboarding modal trigger
+ * - Auth modal trigger for sign-up / log-in flows
+ *
+ * Accessibility:
+ * - aria-label on the mobile menu button for screen readers
+ * - Active route is visually indicated with an underline and colour change
+ * - All interactive elements are keyboard-navigable
+ */
+
 "use client";
+
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";

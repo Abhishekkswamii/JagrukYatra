@@ -1,4 +1,24 @@
+/**
+ * @file LanguageContext.tsx
+ * @description Bilingual (English ↔ Hindi) language context for JagrukYatra.
+ *
+ * How it works:
+ * 1. Components call `t("some english text")` to get localised output.
+ * 2. When Hindi is active, the `t()` function checks a local translation cache first.
+ * 3. On a cache miss, the string is queued and sent to POST /api/translate
+ *    in a batched, debounced request (500 ms) to minimise API calls.
+ * 4. Translations are persisted in `localStorage` so subsequent page visits
+ *    are instant without waiting for a network round-trip.
+ *
+ * WCAG Compliance:
+ * - The `document.documentElement.lang` attribute is kept in sync with the
+ *   active language for correct screen reader pronunciation.
+ *
+ * @see {@link useTranslation} for the public consumer hook
+ */
+
 "use client";
+
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from "react";
 

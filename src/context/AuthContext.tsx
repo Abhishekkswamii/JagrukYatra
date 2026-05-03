@@ -1,4 +1,23 @@
+/**
+ * @file AuthContext.tsx
+ * @description React context for Firebase Authentication state in JagrukYatra.
+ *
+ * Provides the entire application with:
+ * - The currently authenticated Firebase user (`firebaseUser`)
+ * - The user's Firestore profile document (`userDoc`)
+ * - Auth actions: `signUp`, `logIn`, `googleSignIn`, `logOut`, `deleteAccount`
+ * - Progress sync: `saveProgress`, `refreshUserDoc`
+ *
+ * Implementation notes:
+ * - Uses `onAuthStateChanged` to reactively sync auth state with Firestore
+ * - Google Sign-In uses the popup flow (`signInWithPopup`) for better UX on mobile
+ * - User documents are created idempotently on first sign-up via `createUserDoc`
+ * - Account deletion removes the Firestore document before deleting the Auth account
+ *   to avoid orphaned data if the deletion partially fails
+ */
+
 "use client";
+
 
 import {
   createContext,
