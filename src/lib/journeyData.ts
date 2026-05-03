@@ -1,3 +1,13 @@
+/**
+ * @file journeyData.ts
+ * @description Static data layer for JagrukYatra's 8-stage ECI election process.
+ * Contains stage definitions, badge library, state/age-group lists, and
+ * progress utility functions used across the journey, quiz, and profile features.
+ *
+ * Source: Election Commission of India — "Conduct of Elections" handbook
+ * @see https://eci.gov.in
+ */
+
 export const STATES = [
   "Pan India",
   "Andhra Pradesh",
@@ -277,10 +287,22 @@ export const BADGES = [
   },
 ];
 
-/** Set of valid stage slugs — the only IDs that should ever count toward progress */
+/**
+ * Pre-computed Set of valid stage slugs for O(1) look-up performance.
+ * Only slugs present in this set should count toward a user's journey progress.
+ */
 export const VALID_SLUGS = new Set(STAGES.map((s) => s.slug));
 
-/** Count only IDs that are real stage slugs (ignores stale old checklist IDs) */
+/**
+ * Counts how many items in a checklist array are valid stage slugs.
+ * Silently ignores stale or invalid IDs that may exist in older user documents.
+ *
+ * @param checkedItems - Array of checklist item IDs from the user's Firestore document
+ * @returns            Number of items that correspond to a real ECI election stage
+ *
+ * @example
+ * countValidStages(["polling", "voter-registration", "old-invalid-id"]) // → 2
+ */
 export function countValidStages(checkedItems: string[]): number {
   return checkedItems.filter((id) => VALID_SLUGS.has(id)).length;
 }

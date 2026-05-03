@@ -1,3 +1,10 @@
+/**
+ * @file firestore.ts
+ * @description Firestore data access layer for JagrukYatra.
+ * Provides typed CRUD helpers for the users/{uid} collection.
+ * All writes include a server-side `updatedAt` timestamp for audit trails.
+ */
+
 import {
   doc,
   getDoc,
@@ -12,6 +19,10 @@ import { db } from "./firebase";
    Firestore shape for a user document
    Collection: users/{uid}
 ───────────────────────────────────────── */
+/**
+ * Firestore document shape for a user.
+ * Stored at: `users/{uid}`
+ */
 export interface FirestoreUser {
   uid: string;
   displayName: string;
@@ -32,6 +43,11 @@ export interface FirestoreUser {
   updatedAt: unknown;
 }
 
+/**
+ * Subset of FirestoreUser fields that can be partially updated
+ * via `updateUserProgress()`. Prevents accidental overwrites of
+ * immutable fields like `uid`, `email`, or `createdAt`.
+ */
 export type ProgressUpdate = Partial<
   Pick<
     FirestoreUser,
@@ -46,7 +62,13 @@ export type ProgressUpdate = Partial<
   >
 >;
 
-/* ─── Create user doc on first sign-up ─── */
+/**
+ * Creates a new user document in Firestore on first sign-up.
+ * Idempotent — if the document already exists, it is not overwritten.
+ *
+ * @param uid  - Firebase Auth UID (document ID)
+ * @param data - Display name, email, and photo URL from the auth provider
+ */
 export async function createUserDoc(
   uid: string,
   data: Pick<FirestoreUser, "displayName" | "email" | "photoURL">
@@ -74,13 +96,24 @@ export async function createUserDoc(
   await setDoc(ref, initial);
 }
 
-/* ─── Fetch user doc ─── */
+/**
+ * Fetches a user document from Firestore.
+ *
+ * @param uid - Firebase Auth UID
+ * @returns   The typed FirestoreUser or `null` if not found
+ */
 export async function getUserDoc(uid: string): Promise<FirestoreUser | null> {
   const snap = await getDoc(doc(db, "users", uid));
   return snap.exists() ? (snap.data() as FirestoreUser) : null;
 }
 
-/* ─── Partial update helper ─── */
+/**
+ * Partially updates a user document. Always stamps `updatedAt` with the
+ * Firestore server timestamp to keep the audit trail accurate.
+ *
+ * @param uid     - Firebase Auth UID
+ * @param updates - Partial set of mutable user fields to overwrite
+ */
 export async function updateUserProgress(
   uid: string,
   updates: ProgressUpdate
@@ -91,7 +124,13 @@ export async function updateUserProgress(
   });
 }
 
-/* ─── Award a badge (idempotent) ─── */
+/**
+ * Awards a badge to the user idempotently.
+ * If the badge is already in `earnedBadges`, the Firestore write is skipped.
+ *
+ * @param uid     - Firebase Auth UID
+ * @param badgeId - Badge identifier from the `BADGES` array in journeyData.ts
+ */
 export async function awardBadge(uid: string, badgeId: string): Promise<void> {
   const user = await getUserDoc(uid);
   if (!user) return;
@@ -101,7 +140,13 @@ export async function awardBadge(uid: string, badgeId: string): Promise<void> {
   });
 }
 
-/* ─── Add points ─── */
+/**
+ * Atomically adds points to the user's Jagruk Score.
+ * Points accumulate on top of the existing score; the score is never reset here.
+ *
+ * @param uid    - Firebase Auth UID
+ * @param points - Number of points to add (should be positive)
+ */
 export async function addJagrukScore(
   uid: string,
   points: number
@@ -113,7 +158,13 @@ export async function addJagrukScore(
   });
 }
 
-/* ─── Mark module complete ─── */
+/**
+ * Marks a feature module (e.g. "quiz", "simulator") as completed.
+ * Idempotent — the module ID is never duplicated in the array.
+ *
+ * @param uid      - Firebase Auth UID
+ * @param moduleId - Module identifier string (e.g. "quiz", "myth-buster")
+ */
 export async function markModuleComplete(
   uid: string,
   moduleId: string
@@ -126,7 +177,12 @@ export async function markModuleComplete(
   });
 }
 
-/* ─── Delete user doc ─── */
+/**
+ * Permanently deletes a user's Firestore document.
+ * Called immediately before `deleteUser()` from Firebase Auth during account deletion.
+ *
+ * @param uid - Firebase Auth UID
+ */
 export async function deleteUserDoc(uid: string): Promise<void> {
   await deleteDoc(doc(db, "users", uid));
 }
