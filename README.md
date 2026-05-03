@@ -14,6 +14,8 @@
 
 *Empowering 96.8 crore Indian voters through interactive, accessible, AI-powered civic education.*
 
+🔗 **Live Demo:** [jagrukyatra.web.app](https://jagrukyatra.web.app)
+
 </div>
 
 ---

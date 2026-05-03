@@ -253,7 +253,7 @@ export default function MythBusterSection() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-60px" });
 
-  const { firebaseUser, userDoc, refreshUserDoc } = useAuth();
+  const { firebaseUser, refreshUserDoc } = useAuth();
 
   const [started, setStarted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);

@@ -8,7 +8,6 @@ import PersonalizationForm from "@/components/journey/PersonalizationForm";
 import JourneyTimeline from "@/components/journey/JourneyTimeline";
 import AuthModal from "@/components/auth/AuthModal";
 import type { UserProfile } from "@/lib/journeyData";
-import type { Metadata } from "next";
 
 // Note: metadata can't be in a "use client" component — SEO handled by layout
 
@@ -43,6 +42,7 @@ export default function MyJourneyPage() {
     if (firebaseUser && userDoc) {
       if (userDoc.state && userDoc.ageGroup) {
         // User has a profile in Firestore
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setProfile({
           state: userDoc.state,
           ageGroup: userDoc.ageGroup,

@@ -49,6 +49,7 @@ export default function CelebrationModal({
 
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowConfetti(true);
       const t = setTimeout(() => setShowConfetti(false), 6500);
       return () => clearTimeout(t);

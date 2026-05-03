@@ -1,0 +1,24 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "run": {
+          "serviceId": "jagrukyatra",
+          "region": "asia-south1"
+        }
+      }
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false
+  }
+}

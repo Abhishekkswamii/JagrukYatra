@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Clock, User, AlertTriangle, CreditCard, FileText, X } from "lucide-react";
+import { ChevronDown, Clock, User, AlertTriangle, CreditCard, FileText } from "lucide-react";
 
 const scenarios = [
   {

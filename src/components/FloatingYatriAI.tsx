@@ -102,6 +102,7 @@ export default function FloatingYatriAI() {
   useEffect(() => {
     const isFirstVisit = !sessionStorage.getItem("yatri_pulsed");
     if (isFirstVisit) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasPulsed(false);
       sessionStorage.setItem("yatri_pulsed", "true");
       const timer = setTimeout(() => setHasPulsed(true), 3500);

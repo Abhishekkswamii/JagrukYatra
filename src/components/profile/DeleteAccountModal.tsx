@@ -25,9 +25,10 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
       // Success
       router.push("/");
       window.location.reload(); // Force clear everything
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Delete account error:", err);
-      if (err.code === "auth/requires-recent-login") {
+      const errObj = err as { code?: string; message?: string };
+      if (errObj.code === "auth/requires-recent-login") {
         setError("For security, you must log in again before deleting your account.");
         // We could force a logout here so they have to sign in again
         setTimeout(async () => {
@@ -35,7 +36,7 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
           router.push("/");
         }, 3000);
       } else {
-        setError(err.message || "An unexpected error occurred. Please try again.");
+        setError(errObj.message || "An unexpected error occurred. Please try again.");
       }
     } finally {
       setLoading(false);

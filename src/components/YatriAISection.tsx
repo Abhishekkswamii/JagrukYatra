@@ -395,6 +395,7 @@ export default function YatriAIPageContent() {
               </button>
 
               <textarea
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ref={inputRef as any}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}

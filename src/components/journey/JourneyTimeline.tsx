@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Save, CheckCircle2, RefreshCw, LogIn, Cloud, HardDrive, Award, Download } from "lucide-react";
-import { STAGES, BADGES, VALID_SLUGS, countValidStages, type UserProfile } from "@/lib/journeyData";
+import { Save, CheckCircle2, RefreshCw, LogIn, Cloud, HardDrive, Award } from "lucide-react";
+import { STAGES, VALID_SLUGS, countValidStages, type UserProfile } from "@/lib/journeyData";
 import TimelineStage from "./TimelineStage";
 import CelebrationModal from "./CelebrationModal";
 import { useAuth } from "@/context/AuthContext";
@@ -75,7 +75,7 @@ export default function JourneyTimeline({ profile, onReset, onOpenLogin }: Props
 
   /* ── Load progress: Firestore (logged in) or localStorage (guest) ── */
   useEffect(() => {
-    setMounted(true);
+    let active = true;
     const localData = loadFromLocal();
     // Strip any stale old checklist IDs — only keep valid stage slugs
     const sanitize = (items: string[]) => items.filter((id) => VALID_SLUGS.has(id));
@@ -85,17 +85,19 @@ export default function JourneyTimeline({ profile, onReset, onOpenLogin }: Props
       if ((!userDoc.completedChecklist || userDoc.completedChecklist.length === 0) && localData.length > 0) {
         // Migrate local to Firestore (sanitised)
         const clean = sanitize(localData);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCheckedItems(clean);
         updateUserProgress(firebaseUser.uid, { completedChecklist: clean }).catch(() => {});
         localStorage.removeItem(STORAGE_KEY);
       } else {
         setCheckedItems(sanitize(userDoc.completedChecklist ?? []));
       }
-    } else {
-      // Guest — use localStorage (sanitised)
-      setCheckedItems(sanitize(localData));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    
+    if (active) {
+      setMounted(true);
+    }
+    return () => { active = false; };
   }, [firebaseUser, userDoc]);
 
   /* ── Auto-save to localStorage always (guest + logged in as backup) ── */
@@ -105,8 +107,6 @@ export default function JourneyTimeline({ profile, onReset, onOpenLogin }: Props
     
     // Auto-save instantly to Firestore if logged in
     if (firebaseUser) {
-      setSaveStatus("saving");
-
       const score = computeScore(checkedItems);
       // Write journey score absolutely (capped at 100) — never additive to avoid overflow
       updateUserProgress(firebaseUser.uid, {
@@ -116,15 +116,9 @@ export default function JourneyTimeline({ profile, onReset, onOpenLogin }: Props
         if (score >= 50) {
           await markModuleComplete(firebaseUser.uid, "my-journey");
         }
-        setSaveStatus("saved");
-        setTimeout(() => setSaveStatus("idle"), 2500);
       }).catch(() => {
-        setSaveStatus("idle");
+        // ignore
       });
-    } else {
-      // Guest auto-save visual feedback
-      setSaveStatus("saved");
-      setTimeout(() => setSaveStatus("idle"), 2500);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedItems]);
@@ -346,7 +340,6 @@ export default function JourneyTimeline({ profile, onReset, onOpenLogin }: Props
               isFirstTime={profile.firstTimeVoter}
               checkedItems={checkedItems}
               onToggleItem={handleToggle}
-              index={i}
               isLast={i === STAGES.length - 1}
             />
           ))}

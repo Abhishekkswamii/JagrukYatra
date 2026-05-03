@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    console.log(`[Auth] GEMINI_API_KEY loaded successfully (length: ${apiKey.length}). Starts with: ${apiKey.substring(0, 10)}...`);
+    // console.log(`[Auth] GEMINI_API_KEY loaded successfully...`);
 
     const { message, history = [], context } = await req.json();
 
@@ -166,11 +166,11 @@ export async function POST(req: NextRequest) {
             throw new Error(`Client Error: ${response.status} - ${errorData}`);
           }
         }
-      } catch (err: any) {
-        if (err.name === 'AbortError') {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === 'AbortError') {
           console.error(`[Fetch] Request timed out after ${TIMEOUT_MS}ms`);
         } else {
-          console.error(`[Fetch Exception] ${err.message}`);
+          console.error(`[Fetch Exception] ${err instanceof Error ? err.message : String(err)}`);
         }
       }
 
@@ -204,9 +204,9 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ reply: replyText });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("--- YATRI AI FINAL ERROR ---");
-    console.error(error.message || error);
+    console.error(error instanceof Error ? error.message : String(error));
     
     // Professional, polite fallback message as requested
     return NextResponse.json(

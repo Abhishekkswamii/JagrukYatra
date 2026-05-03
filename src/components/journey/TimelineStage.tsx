@@ -13,7 +13,6 @@ interface Props {
   isFirstTime: boolean;
   checkedItems: string[];
   onToggleItem: (id: string) => void;
-  index: number;
   isLast: boolean;
 }
 
@@ -23,7 +22,6 @@ export default function TimelineStage({
   isFirstTime,
   checkedItems,
   onToggleItem,
-  index,
   isLast,
 }: Props) {
   const [expanded, setExpanded] = useState(false);

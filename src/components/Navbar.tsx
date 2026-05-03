@@ -41,12 +41,14 @@ export default function Navbar() {
   // Show onboarding modal after first login if not yet completed
   useEffect(() => {
     if (firebaseUser && userDoc && !userDoc.onboardingComplete) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowOnboarding(true);
     }
   }, [firebaseUser, userDoc]);
 
   // Close mobile menu or profile dropdown on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
     setProfileOpen(false);
   }, [pathname]);
@@ -73,7 +75,7 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
             {/* 1. Left Side: Logo */}
             <Link href="/" className="flex items-center gap-3 group shrink-0">
               <div className="relative w-10 h-10 flex items-center justify-center">
@@ -81,7 +83,8 @@ export default function Navbar() {
                   src="/icon.svg" 
                   alt="JagrukYatra Logo" 
                   width={40} 
-                  height={40} 
+                  height={40}
+                  priority
                   className="drop-shadow-md group-hover:scale-105 transition-transform duration-300 ease-out" 
                 />
               </div>
@@ -92,14 +95,14 @@ export default function Navbar() {
             </Link>
 
             {/* 2. Center Nav (Desktop) */}
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden xl:flex items-center gap-5 2xl:gap-8">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`group relative px-1 py-2 text-[15px] font-semibold transition-colors ${
+                    className={`group relative px-1 py-2 text-sm 2xl:text-[15px] font-semibold whitespace-nowrap transition-colors ${
                       isActive ? "text-[#FF6B00] dark:text-orange-400" : "text-gray-600 dark:text-gray-300 hover:text-[#FF6B00] dark:hover:text-orange-400"
                     }`}
                   >
@@ -115,7 +118,7 @@ export default function Navbar() {
             </nav>
 
             {/* 3. Right Side */}
-            <div className="hidden lg:flex items-center gap-4 shrink-0">
+            <div className="hidden xl:flex items-center gap-3 2xl:gap-4 shrink-0">
               {/* Language Toggle */}
               <button
                 onClick={() => setLanguage(language === "en" ? "hi" : "en")}
@@ -220,7 +223,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-3">
+            <div className="xl:hidden flex items-center gap-3">
               <ThemeToggle />
               {/* Language Toggle Mobile */}
               <button
@@ -256,7 +259,7 @@ export default function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="lg:hidden overflow-hidden bg-white/95 dark:bg-[#020B1F]/95 backdrop-blur-md border-t border-gray-100 dark:border-[#0F1C38] shadow-[0_20px_40px_rgb(0,0,0,0.1)] absolute w-full"
+              className="xl:hidden overflow-hidden bg-white/95 dark:bg-[#020B1F]/95 backdrop-blur-md border-t border-gray-100 dark:border-[#0F1C38] shadow-[0_20px_40px_rgb(0,0,0,0.1)] absolute w-full"
             >
               <div className="px-4 py-5 flex flex-col gap-2 max-w-7xl mx-auto">
                 <nav className="flex flex-col gap-1 mb-4">

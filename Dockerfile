@@ -1,8 +1,8 @@
-# ── Stage 1: Install dependencies ──
+# ── Stage 1: Install ALL dependencies (including dev) ──
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev
+RUN npm ci
 
 # ── Stage 2: Build ──
 FROM node:22-alpine AS builder
@@ -10,24 +10,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Firebase NEXT_PUBLIC_ vars are baked in at build time (required by Next.js)
-ARG NEXT_PUBLIC_FIREBASE_API_KEY
-ARG NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-ARG NEXT_PUBLIC_FIREBASE_PROJECT_ID
-ARG NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-ARG NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-ARG NEXT_PUBLIC_FIREBASE_APP_ID
 
-ENV NEXT_PUBLIC_FIREBASE_API_KEY=$NEXT_PUBLIC_FIREBASE_API_KEY
-ENV NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-ENV NEXT_PUBLIC_FIREBASE_PROJECT_ID=$NEXT_PUBLIC_FIREBASE_PROJECT_ID
-ENV NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-ENV NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=$NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-ENV NEXT_PUBLIC_FIREBASE_APP_ID=$NEXT_PUBLIC_FIREBASE_APP_ID
-
-# ✅ GEMINI_API_KEY is NOT baked at build time.
-# It is injected at RUNTIME via Cloud Run --set-env-vars or Secret Manager.
-# This prevents the key from being embedded in the Docker image layer.
 
 RUN npm run build
 
@@ -39,17 +22,13 @@ ENV NODE_ENV=production
 ENV HOSTNAME="0.0.0.0"
 ENV PORT=8080
 
-# ✅ GEMINI_API_KEY is read from the container's runtime environment.
-# Set it with: gcloud run deploy --set-env-vars GEMINI_API_KEY=YOUR_KEY
-# Or use Google Secret Manager for production-grade security.
-# The value below is a placeholder — override it at deploy time.
+# GEMINI_API_KEY is read at runtime from environment
 ENV GEMINI_API_KEY=""
 
-# Don't run as root
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy built assets from builder
+# Copy standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public

@@ -27,7 +27,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const saved = localStorage.getItem("jagrukyatra_lang") as Language;
     if (saved === "hi" || saved === "en") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguageState(saved);
+      document.documentElement.lang = saved;
+    } else {
+      document.documentElement.lang = "en";
     }
 
     const cached = localStorage.getItem("jagrukyatra_dynamic_translations_hi");
@@ -86,6 +90,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem("jagrukyatra_lang", lang);
+    document.documentElement.lang = lang;
     if (lang === "hi") {
       // Refresh logic could go here
     }
